@@ -1,4 +1,4 @@
-# FSGMTutorial
+# FGSMTutorial
 The original paper can be found at:
 https://arxiv.org/abs/1412.6572
 
