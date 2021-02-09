@@ -1,6 +1,5 @@
 # FGSMTutorial
-The original paper can be found at:
-https://arxiv.org/abs/1412.6572
+In this tutorial, you will learn how to use a Python library called CleverHans from OpenAI to compute adversarial examples that cause the classification accuracy of your MNIST model to significantly drop following the FGSM attack method as introduced in this paper:https://arxiv.org/abs/1412.6572
 
 **FSGM**
 We begin with deriving a simple way of constructing an adversarial example around an input (x, y).
@@ -17,12 +16,30 @@ where L is the cross-entropy loss.
 First, implement the Fast Gradient Sign Method (FGSM) for the neural network given to you in the last tutorial. Then,
 evaluate and report the accuracy of the neural network on adversarial examples. This is computed
 as follows – 
-for each test example x(i)
-, generate an adversarial example ˜x(i)
+for each test example x(i),generate an adversarial example ˜x(i)
 for ε= 0.1. 
-The neural
-network is correct if it predicts y(i) on ˜x(i) and wrong otherwise.
+The neural network is correct if it predicts y(i) on ˜x(i) and wrong otherwise.
 
+*Tutorial Steps*
+1) Import dependent libraries (Tensorflow 2.0 required)
+```python
+from cleverhans.attacks import FastGradientMethod
+from cleverhans.utils_keras import KerasModelWrapper 
+from cleverhans.dataset import MNIST
+```
+2) load your pre-trained model from the last tutorial (lets call it MNIST_model)
+3) evaluate the accuracy of MNIST_model and print results
+4) initialize the Fast Gradient Sign Method (FGSM) attack object and graph using:
+```python
+fgsm = FastGradientMethod(wrap, sess=sess)
+  fgsm_params = {'eps': 0.3,
+                 'clip_min': 0.,
+                 'clip_max': 1.}
+  adv_x = fgsm.generate(x, ** fgsm_params)
+  Consider the attack to be constant
+  adv_x = tf.stop_gradient(adv_x)
+  preds_adv = model(adv_x)
+```
 **New Method and Pseudocode (Optional)**
 Next, design your own method to find adversarial examples. Your algorithm should take as input a
 labeled example (x, y) and a perturbation amount ε, and output an adversarial example ˜x such that
